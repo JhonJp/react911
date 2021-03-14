@@ -2,6 +2,7 @@ import * as React from 'react';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Card } from 'react-native-paper';
 import { StyleSheet } from 'react-native';
+import Icons from 'react-native-vector-icons/FontAwesome5';
 
 const styles = StyleSheet.create({
   tinyLogo: {
@@ -28,14 +29,34 @@ const CustomDrawerContent = (props) => {
       </Card>
       <DrawerItem
         label="Homepage"
-        onPress={() => props.navigation.navigate('Home')}
+        icon={() => <Icons color={'black'} size={20} name="home" />}
+        onPress={() => props.navigation.closeDrawer()}
       />
       <DrawerItem
         label="Incident"
+        icon={() => <Icons color={'black'} size={20} name="first-aid" />}
         onPress={() => props.navigation.navigate('Incident')}
       />
-      <DrawerItem label="Test" onPress={() => console.log('test')} />
-      <DrawerItem label="Test2" onPress={() => console.log('test')} />
+      <DrawerItem
+        label="Terms &amp; Conditions"
+        icon={() => <Icons color={'black'} size={20} name="file-signature" />}
+        onPress={() => props.navigation.closeDrawer()}
+      />
+      <DrawerItem
+        label="FAQs"
+        icon={() => <Icons color={'black'} size={20} name="question-circle" />}
+        onPress={() => props.navigation.closeDrawer()}
+      />
+      <DrawerItem
+        label="Profile"
+        icon={() => <Icons color={'black'} size={20} name="user-cog" />}
+        onPress={() => props.navigation.closeDrawer()}
+      />
+      <DrawerItem
+        label="Sign Out"
+        icon={() => <Icons color={'black'} size={20} name="sign-out-alt" />}
+        onPress={() => props.navigation.closeDrawer()}
+      />
     </DrawerContentScrollView>
   );
 };
