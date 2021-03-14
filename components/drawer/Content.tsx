@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const CustomDrawerContent = (props: any) => {
+const CustomDrawerContent = (props) => {
   return (
     <DrawerContentScrollView {...props}>
       <Card>
@@ -26,7 +26,16 @@ const CustomDrawerContent = (props: any) => {
           style={styles.headerBg}
         />
       </Card>
-      <DrawerItem label="..." onPress={() => console.log('test')} />
+      <DrawerItem
+        label="Homepage"
+        onPress={() => props.navigation.navigate('Home')}
+      />
+      <DrawerItem
+        label="Incident"
+        onPress={() => props.navigation.navigate('Incident')}
+      />
+      <DrawerItem label="Test" onPress={() => console.log('test')} />
+      <DrawerItem label="Test2" onPress={() => console.log('test')} />
     </DrawerContentScrollView>
   );
 };

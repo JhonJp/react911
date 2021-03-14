@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React, { useState } from 'react';
+import React from 'react';
 import { HeaderBackButton } from '@react-navigation/stack';
 import { createStackNavigator } from '@react-navigation/stack';
 import Icons from 'react-native-vector-icons/FontAwesome5';
@@ -12,33 +12,37 @@ import { color } from 'react-native-reanimated';
 const Stack = createStackNavigator();
 
 const Homestack = ({ navigation }) => {
-  const opt = {
-    headerBackImage: () => (
-      // eslint-disable-next-line react-native/no-inline-styles
-      <Icons name="home" size={30} style={{ color: '#fff' }} />
-    ),
-    headerTitle: 'Homepage',
-    headerLeft: (props) => (
-      <HeaderBackButton
-        {...props}
-        onPress={() => {
-          navigation.openDrawer();
-        }}
-      />
-    ),
-    headerStyle: { backgroundColor: '#d44b59' },
-    headerTintColor: 'white',
-  };
-  const [headerOpt, setHeaderOpt] = useState(opt);
 
   return (
     <>
       <Stack.Navigator initialRouteName="Home">
-        <Stack.Screen name="Home" component={Home} options={headerOpt} />
+        <Stack.Screen
+          name="Home"
+          component={Home}
+          options={{
+            headerBackImage: () => (
+              // eslint-disable-next-line react-native/no-inline-styles
+              <Icons name="home" size={25} style={{ color: '#fff' }} />
+            ),
+            headerLeft: (props) => (
+              <HeaderBackButton
+                {...props}
+                onPress={() => {
+                  navigation.openDrawer();
+                }}
+              />
+            ),
+            headerStyle: { backgroundColor: '#d44b59' },
+            headerTintColor: 'white',
+          }}
+        />
         <Stack.Screen
           name="Incident"
           component={IncVMaps}
-          options={headerOpt}
+          options={{
+            headerStyle: { backgroundColor: '#d44b59' },
+            headerTintColor: 'white',
+          }}
         />
       </Stack.Navigator>
     </>
