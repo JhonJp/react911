@@ -1,8 +1,10 @@
 import * as React from 'react';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Card } from 'react-native-paper';
-import { StyleSheet } from 'react-native';
+import { Image, StyleSheet } from 'react-native';
 import Icons from 'react-native-vector-icons/FontAwesome5';
+import logo from '../../assets/img/header.png';
+const logoImg = Image.resolveAssetSource(logo).uri;
 
 const styles = StyleSheet.create({
   tinyLogo: {
@@ -12,7 +14,8 @@ const styles = StyleSheet.create({
   },
   headerBg: {
     marginVertical: -5,
-    backgroundColor: '#d44b59',
+    marginHorizontal: -10,
+    backgroundColor: '#ff5454',
     borderRadius: 0,
   },
 });
@@ -22,7 +25,7 @@ const CustomDrawerContent = (props) => {
     <DrawerContentScrollView {...props}>
       <Card>
         <Card.Cover
-          source={{}}
+          source={{ uri: logoImg }}
           // eslint-disable-next-line react-native/no-inline-styles
           style={styles.headerBg}
         />

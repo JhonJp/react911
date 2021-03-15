@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
     marginVertical: 10,
     paddingVertical: 8,
-    backgroundColor: '#d44b59',
+    backgroundColor: '#ff5454',
   },
   highlight: {
     fontWeight: '700',

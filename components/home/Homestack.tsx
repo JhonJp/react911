@@ -32,7 +32,7 @@ const Homestack = ({ navigation }) => {
                 }}
               />
             ),
-            headerStyle: { backgroundColor: '#d44b59' },
+            headerStyle: { backgroundColor: '#ff5454' },
             headerTintColor: 'white',
           }}
         />
@@ -40,7 +40,7 @@ const Homestack = ({ navigation }) => {
           name="Incident"
           component={IncVMaps}
           options={{
-            headerStyle: { backgroundColor: '#d44b59' },
+            headerStyle: { backgroundColor: '#ff5454' },
             headerTintColor: 'white',
           }}
         />

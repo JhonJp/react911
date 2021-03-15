@@ -33,6 +33,7 @@ local.properties
 #
 .vscode/
 .env
+_tests_
 
 # node.js
 #
