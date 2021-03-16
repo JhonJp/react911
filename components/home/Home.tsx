@@ -98,7 +98,7 @@ const Home = ({ navigation }) => {
               style={styles.headerBg}
             />
             <SearchBar
-              placeholder="Seacrh.."
+              placeholder="Search.."
               onChangeText={(e) => filter(e)}
               value={search}
               searchBarStyle="minimal"
@@ -106,6 +106,8 @@ const Home = ({ navigation }) => {
               style={styles.searchbar}
               inputContainerStyle={{ backgroundColor: 'white' }}
               containerStyle={styles.searchcontainer}
+              onCancel={() => populateData()}
+              onClear={() => populateData()}
             />
           </Card>
         </View>

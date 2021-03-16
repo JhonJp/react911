@@ -6,8 +6,7 @@ export const filterSearch = (
 ) => {
   if (filters == null || undefined) return data;
   return data.filter(
-    (item: IncidentObj) =>
-      item.contact_name.includes(filters.contact_name)
+    (item: IncidentObj) => item.contact_name.includes(filters.contact_name)
     //   item.addresss.toLowerCase().includes(filters.addresss) ||
     //   item.incident_type.includes(filters.incident_type)
   );
