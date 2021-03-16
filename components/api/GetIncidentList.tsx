@@ -1,13 +1,16 @@
 import axios, { AxiosResponse } from 'axios';
 import { Status } from '../models/Status';
 import Response from '../models/Response';
-const getIncidentList = async (id: string) => {
+const getIncidentList = async () => {
   let response: AxiosResponse;
   try {
-    let url =
-      'https://bayan911.com/sbmademo/api/mobilev2/incident/get.php?contact_type=' +
-      id;
-    response = await axios.get(url);
+    let d = {
+      data: {
+        contact_type: 'Giusi Lo(Fire Responder)',
+      },
+    };
+    let url = 'https://bayan911.com/sbmademo/api/mobilev2/incident/get.php';
+    response = await axios.get(url, d);
     return new Response(
       Status.SUCCESS,
       'Successfully retrieved data',

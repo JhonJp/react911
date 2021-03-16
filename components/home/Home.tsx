@@ -13,6 +13,9 @@ import { Badge } from 'react-native-elements';
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import IncidentObj from '../models/incoming/Incident';
 import { incidentList } from '../sample_payload/Incident';
+// import getIncidentList from '../api/GetIncidentList';
+import { SearchBar } from 'react-native-elements';
+import { filterSearch } from '../functions/ObjectFunctions';
 import moment from 'moment';
 import logo from '../../assets/img/header.png';
 const logoImg = Image.resolveAssetSource(logo).uri;
@@ -44,38 +47,71 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 0,
     borderBottomLeftRadius: 0,
   },
+  searchcontainer: {
+    backgroundColor: '#ffffff00',
+    borderWidth: 0, //no effect
+    shadowColor: 'white', //no effect
+    borderBottomColor: '#ffffff00',
+    borderTopColor: '#ffffff00',
+    marginTop: '-15%',
+  },
+  searchbar: {
+    borderWidth: 0, //no effect
+    color: '#808080',
+  },
 });
 
-const Home = () => {
+const Home = ({ navigation }) => {
   const [data, setData] = useState([]);
-  const [scrolled, setScrolled] = useState(false);
+  const [search, setSearch] = useState('');
 
   useEffect(() => {
     populateData();
-  });
+  }, []);
 
   const populateData = async () => {
     // let result: IncidentObj[] = await getIncidentList();
     let result: IncidentObj[] = incidentList;
     setData(result);
   };
+
+  const filter = (event) => {
+    setSearch(event);
+    let filters = {
+      contact_name: search,
+      incident_type: search,
+      addresss: search,
+    };
+    let filteredData: IncidentObj[] = filterSearch(data, filters);
+    console.log(filteredData);
+    setData(filteredData);
+  };
+
   return (
     <>
       <SafeAreaView style={styles.container}>
-        <ScrollView style={[styles.container, { flexDirection: 'column' }]}>
-          {scrolled ? (
-            <></>
-          ) : (
-            <Card>
-              <Card.Cover
-                source={{ uri: logoImg }}
-                // eslint-disable-next-line react-native/no-inline-styles
-                style={styles.headerBg}
-              />
-            </Card>
-          )}
+        <View>
+          <Card style={{ backgroundColor: '#ffffff00' }}>
+            <Card.Cover
+              source={{ uri: logoImg }}
+              // eslint-disable-next-line react-native/no-inline-styles
+              style={styles.headerBg}
+            />
+            <SearchBar
+              placeholder="Seacrh.."
+              onChangeText={(e) => filter(e)}
+              value={search}
+              searchBarStyle="minimal"
+              lightTheme
+              style={styles.searchbar}
+              inputContainerStyle={{ backgroundColor: 'white' }}
+              containerStyle={styles.searchcontainer}
+            />
+          </Card>
+        </View>
+        <ScrollView style={styles.container}>
           {data.map((item, index) => {
-            return <Item key={index} item={item} />;
+            return <Item key={index} item={item} navigation={navigation} />;
           })}
         </ScrollView>
       </SafeAreaView>
@@ -83,9 +119,9 @@ const Home = () => {
   );
 };
 
-const Item = ({ item }) => (
+const Item = ({ item, navigation }) => (
   <TouchableOpacity
-    onPress={() => console.log(item.ticketid)}
+    onPress={() => navigation.navigate('Incident', { incident: item })}
     style={[styles.item]}
   >
     <Card>
