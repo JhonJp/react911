@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
+import Loader from '../../drawer/Loader';
 
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoiamhvbmpwIiwiYSI6ImNqanA2aWZvMTAzMTMza3A0d2prcHM4Z2wifQ.CisG5CTxthlyrUgRIzeZEQ'
@@ -23,9 +24,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const IncVMaps = () => {
+const IncVMaps = ({ navigation }) => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() => setLoading(false), 2000);
+  }, []);
+
   return (
     <>
+      {loading ? <Loader /> : <></>}
       <View style={styles.page}>
         <View style={styles.container}>
           <MapboxGL.MapView style={styles.map} />

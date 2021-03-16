@@ -16,6 +16,7 @@ import { incidentList } from '../sample_payload/Incident';
 // import getIncidentList from '../api/GetIncidentList';
 import { SearchBar } from 'react-native-elements';
 import { filterSearch } from '../functions/ObjectFunctions';
+import Loader from '../drawer/Loader';
 import moment from 'moment';
 import logo from '../../assets/img/header.png';
 const logoImg = Image.resolveAssetSource(logo).uri;
@@ -59,10 +60,20 @@ const styles = StyleSheet.create({
     borderWidth: 0, //no effect
     color: '#808080',
   },
+  containerOverlay: {
+    flex: 1,
+    justifyContent: 'center',
+  },
+  horizontal: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    padding: 10,
+  },
 });
 
 const Home = ({ navigation }) => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
 
   useEffect(() => {
@@ -73,6 +84,7 @@ const Home = ({ navigation }) => {
     // let result: IncidentObj[] = await getIncidentList();
     let result: IncidentObj[] = incidentList;
     setData(result);
+    setLoading(false);
   };
 
   const filter = (event) => {
@@ -90,6 +102,7 @@ const Home = ({ navigation }) => {
   return (
     <>
       <SafeAreaView style={styles.container}>
+        {loading ? <Loader /> : <></>}
         <View>
           <Card style={{ backgroundColor: '#ffffff00' }}>
             <Card.Cover
@@ -123,7 +136,9 @@ const Home = ({ navigation }) => {
 
 const Item = ({ item, navigation }) => (
   <TouchableOpacity
-    onPress={() => navigation.navigate('Incident', { incident: item })}
+    onPress={() =>
+      navigation.navigate('Incident', { incident: item })
+    }
     style={[styles.item]}
   >
     <Card>

@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+// import { StyleSheet } from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ViewMap from './_view_map/View';
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import { Colors } from 'react-native-paper';
+import UpdateInc from './_update/Update';
 
 MapboxGL.setAccessToken(
   'pk.eyJ1IjoiamhvbmpwIiwiYSI6ImNqanA2aWZvMTAzMTMza3A0d2prcHM4Z2wifQ.CisG5CTxthlyrUgRIzeZEQ'
@@ -43,7 +44,7 @@ const IncVMaps = ({ route, navigation }) => {
         />
         <Tab.Screen
           name="Update"
-          component={ViewMap}
+          component={UpdateInc}
           options={{
             tabBarLabel: 'Update Incident',
             tabBarIcon: ({ focused }) => (
