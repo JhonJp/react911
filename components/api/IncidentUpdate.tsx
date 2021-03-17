@@ -1,10 +1,10 @@
 import axios, { AxiosResponse } from 'axios';
 import { Status } from '../models/Status';
 import Response from '../models/Response';
-const login = async () => {
+const updateIncident = async () => {
   let response: AxiosResponse;
   try {
-    let url = 'https://bayan911.com/sbmademo/api/mobilev2/login.php';
+    let url = 'https://bayan911.com/sbmademo/api/mobilev2/incident/update.php';
     response = await axios.post(url);
     return new Response(
       Status.SUCCESS,
@@ -17,4 +17,4 @@ const login = async () => {
   }
 };
 
-export default login;
+export default updateIncident;
