@@ -24,7 +24,8 @@ const styles = StyleSheet.create({
   },
 });
 
-const IncVMaps = ({ navigation }) => {
+const IncVMaps = ({ navigation, route }) => {
+  console.log('DATA------------------',route.params.incident)
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {

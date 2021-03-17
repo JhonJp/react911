@@ -1,12 +1,14 @@
-import * as React from 'react';
+import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { NavigationContainer } from '@react-navigation/native';
+// import { BackHandler } from 'react-native';
 import Signin from './signin/Signin';
 import Drawer from './drawer/Drawer';
 
 const Stack = createStackNavigator();
 
 export default function App() {
+
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Signin">

@@ -14,7 +14,6 @@ MapboxGL.setAccessToken(
 const Tab = createBottomTabNavigator();
 
 const IncVMaps = ({ route, navigation }) => {
-  console.log('PROPS -----', route.params);
   return (
     <>
       <Tab.Navigator
@@ -31,6 +30,7 @@ const IncVMaps = ({ route, navigation }) => {
         <Tab.Screen
           name="ViewMap"
           component={ViewMap}
+          initialParams={route.params}
           options={{
             tabBarLabel: 'View Incident',
             tabBarIcon: ({ focused }) => (
@@ -45,6 +45,7 @@ const IncVMaps = ({ route, navigation }) => {
         <Tab.Screen
           name="Update"
           component={UpdateInc}
+          initialParams={route.params}
           options={{
             tabBarLabel: 'Update Incident',
             tabBarIcon: ({ focused }) => (

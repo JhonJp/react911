@@ -8,19 +8,22 @@ import {
   View,
   Image,
 } from 'react-native';
+import { SearchBar } from 'react-native-elements';
+// import { incidentList } from '../sample_payload/Incident';
+import { filterSearch } from '../functions/ObjectFunctions';
+import { Status } from '../models/Status';
 import { Card, Paragraph } from 'react-native-paper';
 import { Badge } from 'react-native-elements';
+import { LoginResponse } from '../models/incoming/Login';
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import IncidentObj from '../models/incoming/Incident';
-import { incidentList } from '../sample_payload/Incident';
 import getIncidentList from '../api/GetIncidentList';
-import { SearchBar } from 'react-native-elements';
-import { filterSearch } from '../functions/ObjectFunctions';
 import Loader from '../drawer/Loader';
 import Response from '../models/Response';
 import moment from 'moment';
-import logo from '../../assets/img/header.png';
-import { Status } from '../models/Status';
+import logo from '../../assets/img/header2.png';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const logoImg = Image.resolveAssetSource(logo).uri;
 
 const styles = StyleSheet.create({
@@ -82,13 +85,24 @@ const Home = ({ navigation }) => {
     populateData();
   }, []);
 
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@storage_userdata');
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      // error reading value
+    }
+  };
+
   const populateData = async () => {
-    let name = 'Fire Responder';
-    let resultActual: Response<IncidentObj[]> = await getIncidentList(name);
+    let user: LoginResponse = await getData();
+    let resultActual: Response<IncidentObj[]> = await getIncidentList(
+      user.contact_type
+    );
     if (resultActual.code !== Status.ERROR) {
+      setLoading(false);
       setData(resultActual.data);
     }
-    setLoading(false);
   };
 
   const filter = (event) => {
@@ -105,7 +119,6 @@ const Home = ({ navigation }) => {
   return (
     <>
       <SafeAreaView style={styles.container}>
-        {loading ? <Loader /> : <></>}
         <View>
           <Card style={{ backgroundColor: '#ffffff00' }}>
             <Card.Cover
@@ -128,9 +141,15 @@ const Home = ({ navigation }) => {
           </Card>
         </View>
         <ScrollView style={styles.container}>
-          {data.map((item, index) => {
-            return <Item key={index} item={item} navigation={navigation} />;
-          })}
+          {loading ? (
+            <Loader />
+          ) : (
+            <>
+              {data.map((item, index) => {
+                return <Item key={index} item={item} navigation={navigation} />;
+              })}
+            </>
+          )}
         </ScrollView>
       </SafeAreaView>
     </>

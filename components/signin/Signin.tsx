@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -8,7 +8,13 @@ import {
 } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { DefaultTheme, Text, TextInput, Button } from 'react-native-paper';
+import { Status } from '../models/Status';
 import logo from '../../assets/img/logo.png';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Response from '../models/Response';
+import login from '../api/Login';
+import Loader from '../drawer/Loader';
+import Dialog from '../drawer/Dialog';
 
 const logoImg = Image.resolveAssetSource(logo).uri;
 const theme = {
@@ -74,12 +80,83 @@ const styles = StyleSheet.create({
   },
 });
 
-const Signin = (props) => {
+const Signin = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(true);
+  const [userdata, setUserdata] = useState(null);
+  const [visible, setVisible] = useState(false);
 
+  const storeData = async (value) => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('@storage_userdata', jsonValue);
+    } catch (e) {
+      // saving error
+    }
+  };
+
+  // AsyncStorage.clear();
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@storage_userdata');
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  const loginSubmit = async () => {
+    if (username.length !== 0 && password.length !== 0) {
+      let d = {
+        data: {
+          username: username,
+          password: password,
+        },
+      };
+      setLoading(true);
+      const response: Response<any> = await login(d);
+      if (response.code !== Status.ERROR) {
+        if (response.data === 0) {
+          showDialog();
+        } else {
+          storeData(response.data);
+          setLoading(false);
+          navigation.navigate('Drawer');
+        }
+      } else {
+        showDialog();
+      }
+    } else {
+      showDialog();
+    }
+  };
+
+  const hideModal = () => setVisible(false);
+  const showDialog = () => setVisible(true);
+
+  useEffect(() => {
+    checkIn();
+  });
+
+  const checkIn = async () => {
+    setUserdata(await getData());
+    if (userdata != null) {
+      setLoading(false);
+      navigation.navigate('Drawer');
+    } else {
+      setLoading(false);
+    }
+  };
   return (
     <>
+      {loading ? <Loader /> : <></>}
+      <Dialog
+        visible={visible}
+        hideModal={hideModal}
+        title={'Warning'}
+        message={'You entered an invalid input, please try again.'}
+      />
       <SafeAreaView>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View style={styles.body}>
@@ -116,7 +193,7 @@ const Signin = (props) => {
               <Button
                 mode="contained"
                 style={styles.button}
-                onPress={() => props.navigation.push('Drawer')}
+                onPress={() => loginSubmit()}
               >
                 Sign In
               </Button>
