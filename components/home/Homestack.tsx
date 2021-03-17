@@ -7,6 +7,7 @@ import Home from './Home';
 // import Inc_Create from '../incident/_update/Update';
 // import Inc_Update from '../incident/_update/Update';
 import IncVMaps from '../incident/TabStack';
+import Signin from '../signin/Signin';
 // import { color } from 'react-native-reanimated';
 
 const Stack = createStackNavigator();
@@ -43,6 +44,11 @@ const Homestack = ({ navigation }) => {
           //   headerStyle: { backgroundColor: '#ff5454' },
           //   headerTintColor: 'white',
           // }}
+        />
+        <Stack.Screen
+          name="Signin"
+          component={Signin}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </>

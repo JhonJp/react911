@@ -1,9 +1,10 @@
-import * as React from 'react';
+import React from 'react';
 import { DrawerContentScrollView, DrawerItem } from '@react-navigation/drawer';
 import { Card } from 'react-native-paper';
 import { Image, StyleSheet } from 'react-native';
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import logo from '../../assets/img/header2.png';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 const logoImg = Image.resolveAssetSource(logo).uri;
 
 const styles = StyleSheet.create({
@@ -35,7 +36,7 @@ const CustomDrawerContent = (props) => {
         icon={() => <Icons color={'black'} size={20} name="home" />}
         onPress={() => props.navigation.closeDrawer()}
       />
-      <DrawerItem
+      {/* <DrawerItem
         label="Incident"
         icon={() => <Icons color={'black'} size={20} name="first-aid" />}
         onPress={() => props.navigation.navigate('Incident')}
@@ -54,7 +55,7 @@ const CustomDrawerContent = (props) => {
         label="Profile"
         icon={() => <Icons color={'black'} size={20} name="user-cog" />}
         onPress={() => props.navigation.closeDrawer()}
-      />
+      /> */}
       <DrawerItem
         label="Sign Out"
         icon={() => <Icons color={'black'} size={20} name="sign-out-alt" />}

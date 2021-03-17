@@ -2,12 +2,16 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, ScrollView, View, Text } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { TextInput, Card, Paragraph } from 'react-native-paper';
+import { TextInput, Card, Paragraph, Button } from 'react-native-paper';
+import RNPickerSelect from 'react-native-picker-select';
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import Loader from '../../drawer/Loader';
 import IncidentObj from '../../models/incoming/Incident';
 import moment from 'moment';
-import DropDownPicker from 'react-native-dropdown-picker';
+import Response from '../../models/Response';
+import getstatus from '../../api/GetStatus';
+import { Status } from '../../models/Status';
+import mapToIncidentStatus from '../../mappers/IncidentStatus';
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -30,9 +34,11 @@ const styles = StyleSheet.create({
     paddingVertical: 5,
   },
   button: {
-    marginHorizontal: 30,
     marginVertical: 10,
+    marginHorizontal: 10,
     paddingVertical: 8,
+    width: '25%',
+    alignSelf: 'flex-end',
     backgroundColor: '#ff5454',
   },
   highlight: {
@@ -53,13 +59,48 @@ const styles = StyleSheet.create({
   },
 });
 
+const pickerSelectStyles = StyleSheet.create({
+  inputIOS: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    marginHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+  inputAndroid: {
+    fontSize: 16,
+    paddingHorizontal: 10,
+    paddingVertical: 15,
+    marginHorizontal: 10,
+    borderWidth: 1,
+    borderColor: 'black',
+    borderRadius: 4,
+    color: 'black',
+    paddingRight: 30, // to ensure the text is never behind the icon
+  },
+});
+
 const Inc_Update = ({ route }) => {
   const [loading, setLoading] = useState(true);
   const item: IncidentObj = route.params.incident;
+  const [statuses, setStatus] = useState([]);
 
   useEffect(() => {
-    setTimeout(() => setLoading(false), 1000);
+    populate();
   }, []);
+
+  const populate = async () => {
+    let response: Response<[]> = await getstatus();
+    if (response.code !== Status.ERROR) {
+      let mappedStat = mapToIncidentStatus(response.data);
+      setStatus(mappedStat);
+      setLoading(false);
+    }
+  };
 
   return (
     <>
@@ -129,36 +170,33 @@ const Inc_Update = ({ route }) => {
         </View>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View>
+            <View style={[styles.innerText, { marginTop: 10 }]}>
+              <Text style={[styles.innerText, {paddingLeft: 10 }]}>&nbsp; Select status update</Text>
+              <RNPickerSelect
+                style={pickerSelectStyles}
+                useNativeAndroidPickerStyle={false}
+                onValueChange={(value) => console.log(value)}
+                items={statuses}
+              />
+            </View>
             <View>
               <TextInput
-                label="Email"
-                placeholder="Your username or email"
+                label="Remarls"
+                placeholder="Please indicate your remarks"
                 style={styles.sectionInputs}
                 mode="outlined"
+                multiline={true}
+                numberOfLines={7}
                 onChangeText={(text) => console.log(text)}
               />
             </View>
             <View>
-              <DropDownPicker
-                items={[
-                  {
-                    label: 'UK',
-                    value: 'uk',
-                    icon: () => <Icons name="flag" size={18} color="#900" />,
-                  },
-                  {
-                    label: 'France',
-                    value: 'france',
-                    icon: () => <Icons name="flag" size={18} color="#900" />,
-                  },
-                ]}
-                multiple={false}
-                containerStyle={{ height: 40 }}
-                itemStyle={{
-                  justifyContent: 'flex-start',
-                }}
-                onChangeItem={(item) => console.log(item)}
-              />
+              <Button mode="contained"
+                style={styles.button}
+                onPress={() => console.log('UPDATE-----------')}
+              >
+                Update
+              </Button>
             </View>
           </View>
         </ScrollView>
