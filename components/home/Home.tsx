@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   View,
   Image,
+  BackHandler,
 } from 'react-native';
 import { SearchBar } from 'react-native-elements';
 // import { incidentList } from '../sample_payload/Incident';
@@ -23,6 +24,7 @@ import Response from '../models/Response';
 import moment from 'moment';
 import logo from '../../assets/img/header2.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Dialog from '../drawer/Dialog';
 
 const logoImg = Image.resolveAssetSource(logo).uri;
 
@@ -80,9 +82,24 @@ const Home = ({ navigation }) => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [exitApp, setExit] = useState(false);
 
   useEffect(() => {
     populateData();
+  }, []);
+
+  const exitTrueApp = () => {
+    setExit(true);
+  };
+  const exitFalseApp = () => setExit(false);
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      exitTrueApp();
+      return true;
+    });
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', () => true);
   }, []);
 
   const getData = async () => {
@@ -119,6 +136,14 @@ const Home = ({ navigation }) => {
   return (
     <>
       <SafeAreaView style={styles.container}>
+        <Dialog
+          visible={exitApp}
+          hideModal={exitFalseApp}
+          title={'Close Application'}
+          message={
+            'You may close or dismiss the application or choose to logout from the sidebar, thank you very much.'
+          }
+        />
         <View>
           <Card style={{ backgroundColor: '#ffffff00' }}>
             <Card.Cover

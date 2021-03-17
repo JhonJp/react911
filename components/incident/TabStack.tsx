@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Colors } from 'react-native-paper';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { BackHandler } from  'react-native';
 // import { StyleSheet } from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
 import ViewMap from './_view_map/View';
@@ -13,7 +14,16 @@ MapboxGL.setAccessToken(
 
 const Tab = createBottomTabNavigator();
 
-const IncVMaps = ({ route }) => {
+const IncVMaps = ({ route, navigation }) => {
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      navigation.navigate('Home');
+      return true;
+    });
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', () => true);
+  }, []);
+
   return (
     <>
       <Tab.Navigator

@@ -1,7 +1,8 @@
 import 'react-native-gesture-handler';
-import React from 'react';
-// import { HeaderBackButton } from '@react-navigation/stack';
+import React, { useState, useEffect } from 'react';
+import { BackHandler } from 'react-native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { verifyLoginData } from '../functions/SessionVerify';
 // import Icons from 'react-native-vector-icons/FontAwesome5';
 import Home from './Home';
 // import Inc_Create from '../incident/_update/Update';
@@ -13,9 +14,25 @@ import Signin from '../signin/Signin';
 const Stack = createStackNavigator();
 
 const Homestack = () => {
+  const [initialRoute, setInitialRoute] = useState('Home');
+
+  useEffect(() => {
+    BackHandler.removeEventListener('hardwareBackPress', () => true);
+    checkIn();
+  });
+
+  const checkIn = async () => {
+    let check = await verifyLoginData();
+    if (check === true) {
+      setInitialRoute('Home');
+    } else {
+      setInitialRoute('Signin');
+    }
+  };
+
   return (
     <>
-      <Stack.Navigator initialRouteName="Home">
+      <Stack.Navigator initialRouteName={initialRoute}>
         <Stack.Screen
           name="Home"
           component={Home}
@@ -48,7 +65,9 @@ const Homestack = () => {
         <Stack.Screen
           name="Signin"
           component={Signin}
-          options={{ headerShown: false }}
+          options={{
+            headerShown: false,
+          }}
         />
       </Stack.Navigator>
     </>

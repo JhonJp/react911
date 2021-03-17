@@ -4,6 +4,7 @@ import { Badge } from 'react-native-elements';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { TextInput, Card, Paragraph, Button } from 'react-native-paper';
 import { Status } from '../../models/Status';
+import { LoginResponse } from '../../models/incoming/Login';
 import RNPickerSelect from 'react-native-picker-select';
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import Loader from '../../drawer/Loader';
@@ -12,6 +13,9 @@ import moment from 'moment';
 import Response from '../../models/Response';
 import getstatus from '../../api/GetStatus';
 import mapToIncidentStatus from '../../mappers/IncidentStatus';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import updateIncident from '../../api/IncidentUpdate';
+import Dialog from '../../drawer/Dialog';
 
 const styles = StyleSheet.create({
   sectionContainer: {
@@ -84,10 +88,13 @@ const pickerSelectStyles = StyleSheet.create({
   },
 });
 
-const Inc_Update = ({ route }) => {
+const Inc_Update = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const item: IncidentObj = route.params.incident;
   const [statuses, setStatus] = useState([]);
+  const [selectedstat, setSelectedStatus] = useState('');
+  const [Itemremarks, setRemarks] = useState('');
+  const [dial, setDialog] = useState(false);
 
   useEffect(() => {
     populate();
@@ -102,10 +109,51 @@ const Inc_Update = ({ route }) => {
     }
   };
 
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@storage_userdata');
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      // error reading value
+    }
+  };
+
+  const closeDialog = () => {
+    setDialog(false);
+    navigation.navigate('Home');
+  };
+
+  const submitUpdate = async () => {
+    setLoading(true);
+    let userdata: LoginResponse = await getData();
+    let d = {
+      data: {
+        contact_id: userdata.contactid,
+        status: selectedstat,
+        remarks: Itemremarks,
+        ticket_id: item.ticketid,
+      },
+    };
+    const send = await updateIncident(JSON.stringify(d));
+    if (send.code !== Status.ERROR) {
+      setLoading(false);
+      setDialog(true);
+      console.log(send.data);
+    }
+  };
+
   return (
     <>
       {loading ? <Loader /> : <></>}
       <SafeAreaView>
+        <Dialog
+          visible={dial}
+          hideModal={() => closeDialog()}
+          title={'Ticket Update'}
+          message={
+            'Your ticket has been updated successfully, thank you very much.'
+          }
+        />
         <View>
           <Card>
             <Badge
@@ -175,7 +223,8 @@ const Inc_Update = ({ route }) => {
               <RNPickerSelect
                 style={pickerSelectStyles}
                 useNativeAndroidPickerStyle={false}
-                onValueChange={(value) => console.log(value)}
+                value={selectedstat}
+                onValueChange={(value) => setSelectedStatus(value)}
                 items={statuses}
               />
             </View>
@@ -187,13 +236,14 @@ const Inc_Update = ({ route }) => {
                 mode="outlined"
                 multiline={true}
                 numberOfLines={7}
-                onChangeText={(text) => console.log(text)}
+                defaultValue={Itemremarks}
+                onChangeText={(text) => setRemarks(text)}
               />
             </View>
             <View>
               <Button mode="contained"
                 style={styles.button}
-                onPress={() => console.log('UPDATE-----------')}
+                onPress={() => submitUpdate()}
               >
                 Update
               </Button>

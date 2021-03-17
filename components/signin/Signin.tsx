@@ -5,6 +5,7 @@ import {
   ScrollView,
   View,
   Image,
+  BackHandler,
 } from 'react-native';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { DefaultTheme, Text, TextInput, Button } from 'react-native-paper';
@@ -86,6 +87,7 @@ const Signin = ({ navigation }) => {
   const [loading, setLoading] = useState(true);
   const [userdata, setUserdata] = useState(null);
   const [visible, setVisible] = useState(false);
+  const [exitApp, setExit] = useState(false);
 
   const storeData = async (value) => {
     try {
@@ -134,10 +136,23 @@ const Signin = ({ navigation }) => {
 
   const hideModal = () => setVisible(false);
   const showDialog = () => setVisible(true);
+  const exitTrueApp = () => {
+    setExit(true);
+  };
+  const exitFalseApp = () => setExit(false);
 
   useEffect(() => {
     checkIn();
   });
+
+  useEffect(() => {
+    BackHandler.addEventListener('hardwareBackPress', () => {
+      exitTrueApp();
+      return true;
+    });
+    return () =>
+      BackHandler.removeEventListener('hardwareBackPress', () => true);
+  }, []);
 
   const checkIn = async () => {
     setUserdata(await getData());
@@ -156,6 +171,14 @@ const Signin = ({ navigation }) => {
         hideModal={hideModal}
         title={'Warning'}
         message={'You entered an invalid input, please try again.'}
+      />
+      <Dialog
+        visible={exitApp}
+        hideModal={exitFalseApp}
+        title={'Close Application'}
+        message={
+          'You may close or dismiss the application now, thank you very much.'
+        }
       />
       <SafeAreaView>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
