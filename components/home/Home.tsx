@@ -13,12 +13,14 @@ import { Badge } from 'react-native-elements';
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import IncidentObj from '../models/incoming/Incident';
 import { incidentList } from '../sample_payload/Incident';
-// import getIncidentList from '../api/GetIncidentList';
+import getIncidentList from '../api/GetIncidentList';
 import { SearchBar } from 'react-native-elements';
 import { filterSearch } from '../functions/ObjectFunctions';
 import Loader from '../drawer/Loader';
+import Response from '../models/Response';
 import moment from 'moment';
 import logo from '../../assets/img/header.png';
+import { Status } from '../models/Status';
 const logoImg = Image.resolveAssetSource(logo).uri;
 
 const styles = StyleSheet.create({
@@ -81,9 +83,10 @@ const Home = ({ navigation }) => {
   }, []);
 
   const populateData = async () => {
-    // let result: IncidentObj[] = await getIncidentList();
-    let result: IncidentObj[] = incidentList;
-    setData(result);
+    let resultActual: Response<IncidentObj[]> = await getIncidentList();
+    if (resultActual.code !== Status.ERROR) {
+      setData(resultActual.data);
+    }
     setLoading(false);
   };
 
@@ -95,7 +98,6 @@ const Home = ({ navigation }) => {
       addresss: search,
     };
     let filteredData: IncidentObj[] = filterSearch(data, filters);
-    console.log(filteredData);
     setData(filteredData);
   };
 
@@ -136,9 +138,7 @@ const Home = ({ navigation }) => {
 
 const Item = ({ item, navigation }) => (
   <TouchableOpacity
-    onPress={() =>
-      navigation.navigate('Incident', { incident: item })
-    }
+    onPress={() => navigation.navigate('Incident', { incident: item })}
     style={[styles.item]}
   >
     <Card>

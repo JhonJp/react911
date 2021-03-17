@@ -6,14 +6,14 @@ const getIncidentList = async () => {
   try {
     let d = {
       data: {
-        contact_type: 'Giusi Lo(Fire Responder)',
+        contact_type: 'Fire Responder',
       },
     };
     let url = 'https://bayan911.com/sbmademo/api/mobilev2/incident/get.php';
-    response = await axios.get(url, d);
+    response = await axios.post(url, JSON.stringify(d));
     return new Response(
       Status.SUCCESS,
-      'Successfully retrieved data',
+      'Success retrieving data',
       response.data
     );
   } catch (e) {
