@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { Status } from '../models/Status';
 import Response from '../models/Response';
+
 const getIncidentList = async (query: string) => {
   let response: AxiosResponse;
   try {

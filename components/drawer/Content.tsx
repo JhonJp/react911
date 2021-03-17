@@ -4,7 +4,6 @@ import { Card } from 'react-native-paper';
 import { Image, StyleSheet } from 'react-native';
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import logo from '../../assets/img/header2.png';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 const logoImg = Image.resolveAssetSource(logo).uri;
 
 const styles = StyleSheet.create({

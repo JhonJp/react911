@@ -1,6 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { Status } from '../models/Status';
 import Response from '../models/Response';
+
 const login = async (data) => {
   let response: AxiosResponse;
   try {

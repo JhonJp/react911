@@ -3,6 +3,7 @@ import { SafeAreaView, StyleSheet, ScrollView, View, Text } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { TextInput, Card, Paragraph, Button } from 'react-native-paper';
+import { Status } from '../../models/Status';
 import RNPickerSelect from 'react-native-picker-select';
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import Loader from '../../drawer/Loader';
@@ -10,7 +11,6 @@ import IncidentObj from '../../models/incoming/Incident';
 import moment from 'moment';
 import Response from '../../models/Response';
 import getstatus from '../../api/GetStatus';
-import { Status } from '../../models/Status';
 import mapToIncidentStatus from '../../mappers/IncidentStatus';
 
 const styles = StyleSheet.create({

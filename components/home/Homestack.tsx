@@ -12,7 +12,7 @@ import Signin from '../signin/Signin';
 
 const Stack = createStackNavigator();
 
-const Homestack = ({ navigation }) => {
+const Homestack = () => {
   return (
     <>
       <Stack.Navigator initialRouteName="Home">

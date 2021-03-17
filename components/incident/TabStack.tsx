@@ -1,10 +1,10 @@
 import React from 'react';
+import { Colors } from 'react-native-paper';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 // import { StyleSheet } from 'react-native';
 import MapboxGL from '@react-native-mapbox-gl/maps';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import ViewMap from './_view_map/View';
 import Icons from 'react-native-vector-icons/FontAwesome5';
-import { Colors } from 'react-native-paper';
 import UpdateInc from './_update/Update';
 
 MapboxGL.setAccessToken(
@@ -13,7 +13,7 @@ MapboxGL.setAccessToken(
 
 const Tab = createBottomTabNavigator();
 
-const IncVMaps = ({ route, navigation }) => {
+const IncVMaps = ({ route }) => {
   return (
     <>
       <Tab.Navigator
