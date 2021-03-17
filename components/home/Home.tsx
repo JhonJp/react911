@@ -83,7 +83,8 @@ const Home = ({ navigation }) => {
   }, []);
 
   const populateData = async () => {
-    let resultActual: Response<IncidentObj[]> = await getIncidentList();
+    let name = 'Fire Responder';
+    let resultActual: Response<IncidentObj[]> = await getIncidentList(name);
     if (resultActual.code !== Status.ERROR) {
       setData(resultActual.data);
     }
