@@ -3,11 +3,17 @@ import React, { useState, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, ScrollView, View, Text, Image } from 'react-native';
 import { Badge } from 'react-native-elements';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { TextInput, Card, Paragraph, Button } from 'react-native-paper';
+import {
+  TextInput,
+  Card,
+  Paragraph,
+  Button,
+  RadioButton,
+} from 'react-native-paper';
 import { Status } from '../../models/Status';
 import { LoginResponse } from '../../models/incoming/Login';
 import { FileUpload } from '../../models/outgoing/Fileupload';
-import RNPickerSelect from 'react-native-picker-select';
+// import RNPickerSelect from 'react-native-picker-select';
 import Icons from 'react-native-vector-icons/FontAwesome5';
 import Loader from '../../drawer/Loader';
 import IncidentObj from '../../models/incoming/Incident';
@@ -17,7 +23,7 @@ import getstatus from '../../api/GetStatus';
 import mapToIncidentStatus from '../../mappers/IncidentStatus';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import updateIncident from '../../api/IncidentUpdate';
-import Dialog from '../../drawer/Dialog';
+import DialogCustom from '../../drawer/Dialog';
 import * as ImagePicker from '../../picker';
 import uploadImage from '../../api/UploadImage';
 
@@ -90,30 +96,11 @@ const styles = StyleSheet.create({
     alignSelf: 'baseline',
     backgroundColor: '#687e97',
   },
-});
-
-const pickerSelectStyles = StyleSheet.create({
-  inputIOS: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-    marginHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 4,
-    color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
-  },
-  inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
-    paddingVertical: 15,
-    marginHorizontal: 10,
-    borderWidth: 1,
-    borderColor: 'black',
-    borderRadius: 4,
-    color: 'black',
-    paddingRight: 30, // to ensure the text is never behind the icon
+  item: {
+    padding: 20,
+    marginVertical: 8,
+    marginHorizontal: 16,
+    justifyContent: 'center',
   },
 });
 
@@ -121,7 +108,7 @@ const Inc_Update = ({ route, navigation }) => {
   const [loading, setLoading] = useState(true);
   const item: IncidentObj = route.params.incident;
   const [statuses, setStatus] = useState([]);
-  const [selectedstat, setSelectedStatus] = useState('');
+  const [selectedstat, setSelectedStatus] = useState('Open');
   const [Itemremarks, setRemarks] = useState('');
   const [dial, setDialog] = useState(false);
   const [imageMax, setMaxImg] = useState(false);
@@ -280,7 +267,7 @@ const Inc_Update = ({ route, navigation }) => {
       <SafeAreaView>
         <ScrollView contentInsetAdjustmentBehavior="automatic">
           <View style={{ marginBottom: '10%' }}>
-            <Dialog
+            <DialogCustom
               visible={dial}
               hideModal={() => closeDialog()}
               title={'Ticket Update'}
@@ -288,7 +275,7 @@ const Inc_Update = ({ route, navigation }) => {
                 'Your ticket has been updated successfully, thank you very much.'
               }
             />
-            <Dialog
+            <DialogCustom
               visible={imageMax}
               hideModal={() => closeImgDialog()}
               title={'Max Image'}
@@ -362,17 +349,33 @@ const Inc_Update = ({ route, navigation }) => {
               <Text style={[styles.innerText, { paddingLeft: 10 }]}>
                 &nbsp; Select status update
               </Text>
-              <RNPickerSelect
-                style={pickerSelectStyles}
-                useNativeAndroidPickerStyle={false}
-                value={selectedstat}
-                onValueChange={(value) => setSelectedStatus(value)}
-                items={statuses}
-              />
+              <View
+                style={{
+                  borderColor: '#9d9d9d',
+                  borderWidth: 1,
+                  marginHorizontal: 10,
+                  borderRadius: 4,
+                }}
+              >
+                <RadioButton.Group
+                  onValueChange={(value) => setSelectedStatus(value)}
+                  value={selectedstat}
+                >
+                  {statuses.map((s) => {
+                    return (
+                      <RadioButton.Item
+                        key={s.status_id}
+                        label={s.label}
+                        value={s.label}
+                      />
+                    );
+                  })}
+                </RadioButton.Group>
+              </View>
             </View>
             <View>
               <TextInput
-                label="Remarls"
+                label="Remarks"
                 placeholder="Please indicate your remarks"
                 style={styles.sectionInputs}
                 mode="outlined"
