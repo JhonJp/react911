@@ -162,68 +162,75 @@ const Signin = ({ navigation }) => {
     } else {
       setLoading(false);
     }
+    setLoading(false);
   };
   return (
     <>
-      {loading ? <Loader /> : <></>}
-      <Dialog
-        visible={visible}
-        hideModal={hideModal}
-        title={'Warning'}
-        message={'You entered an invalid input, please try again.'}
-      />
-      <Dialog
-        visible={exitApp}
-        hideModal={exitFalseApp}
-        title={'Close Application'}
-        message={
-          'You may close or dismiss the application now, thank you very much.'
-        }
-      />
-      <SafeAreaView>
-        <ScrollView contentInsetAdjustmentBehavior="automatic">
-          <View style={styles.body}>
-            <View style={styles.sectionContainer}>
-              <Image style={styles.tinyLogo} source={{ uri: logoImg }} />
-              <Text style={styles.baseText}>
-                Bayan
-                <Text style={styles.innerText}> 911</Text>
-              </Text>
-            </View>
-            <View>
-              <TextInput
-                label="Email"
-                value={username}
-                placeholder="Your username or email"
-                style={styles.sectionInputs}
-                mode="outlined"
-                onChangeText={(text) => setUsername(text)}
-              />
-            </View>
-            <View>
-              <TextInput
-                label="Password"
-                placeholder="Your password here"
-                value={password}
-                style={styles.sectionInputs}
-                mode="outlined"
-                secureTextEntry={true}
-                theme={theme}
-                onChangeText={(text) => setPassword(text)}
-              />
-            </View>
-            <View>
-              <Button
-                mode="contained"
-                style={styles.button}
-                onPress={() => loginSubmit()}
-              >
-                Sign In
-              </Button>
-            </View>
-          </View>
-        </ScrollView>
-      </SafeAreaView>
+      {userdata == null ? (
+        <>
+          {loading ? <Loader /> : <></>}
+          <Dialog
+            visible={visible}
+            hideModal={hideModal}
+            title={'Warning'}
+            message={'You entered an invalid input, please try again.'}
+          />
+          <Dialog
+            visible={exitApp}
+            hideModal={exitFalseApp}
+            title={'Close Application'}
+            message={
+              'You may close or dismiss the application now, thank you very much.'
+            }
+          />
+          <SafeAreaView>
+            <ScrollView contentInsetAdjustmentBehavior="automatic">
+              <View style={styles.body}>
+                <View style={styles.sectionContainer}>
+                  <Image style={styles.tinyLogo} source={{ uri: logoImg }} />
+                  <Text style={styles.baseText}>
+                    Bayan
+                    <Text style={styles.innerText}> 911</Text>
+                  </Text>
+                </View>
+                <View>
+                  <TextInput
+                    label="Email"
+                    value={username}
+                    placeholder="Your username or email"
+                    style={styles.sectionInputs}
+                    mode="outlined"
+                    onChangeText={(text) => setUsername(text)}
+                  />
+                </View>
+                <View>
+                  <TextInput
+                    label="Password"
+                    placeholder="Your password here"
+                    value={password}
+                    style={styles.sectionInputs}
+                    mode="outlined"
+                    secureTextEntry={true}
+                    theme={theme}
+                    onChangeText={(text) => setPassword(text)}
+                  />
+                </View>
+                <View>
+                  <Button
+                    mode="contained"
+                    style={styles.button}
+                    onPress={() => loginSubmit()}
+                  >
+                    Sign In
+                  </Button>
+                </View>
+              </View>
+            </ScrollView>
+          </SafeAreaView>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

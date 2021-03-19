@@ -6,10 +6,14 @@ import DrawerContent from './Content';
 
 const Drawer = createDrawerNavigator();
 
-const DrawerNavigator = () => {
+const DrawerNavigator = ({ navigation }) => {
   return (
     <Drawer.Navigator drawerContent={(props) => <DrawerContent {...props} />}>
-      <Drawer.Screen name="Stack" component={Homestack} />
+      <Drawer.Screen
+        name="Stack"
+        component={Homestack}
+        initialParams={navigation}
+      />
     </Drawer.Navigator>
   );
 };
@@ -20,5 +24,5 @@ const DrawerPage = () => {
       <DrawerNavigator />
     </NavigationContainer>
   );
-}
+};
 export default DrawerPage;

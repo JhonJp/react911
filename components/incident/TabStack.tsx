@@ -27,7 +27,7 @@ const IncVMaps = ({ route, navigation }) => {
   return (
     <>
       <Tab.Navigator
-        initialRouteName="ViewMap"
+        initialRouteName="Update"
         tabBarOptions={{
           labelStyle: {
             textTransform: 'none',
@@ -38,21 +38,6 @@ const IncVMaps = ({ route, navigation }) => {
         }}
       >
         <Tab.Screen
-          name="ViewMap"
-          component={ViewMap}
-          initialParams={route.params}
-          options={{
-            tabBarLabel: 'View Incident',
-            tabBarIcon: ({ focused }) => (
-              <Icons
-                name="map-marked"
-                color={focused ? Colors.blue800 : Colors.grey400}
-                size={20}
-              />
-            ),
-          }}
-        />
-        <Tab.Screen
           name="Update"
           component={UpdateInc}
           initialParams={route.params}
@@ -62,7 +47,22 @@ const IncVMaps = ({ route, navigation }) => {
               <Icons
                 name="file-medical-alt"
                 size={20}
-                color={focused ? Colors.blue800 : Colors.grey400}
+                color={focused ? Colors.blue700 : Colors.grey400}
+              />
+            ),
+          }}
+        />
+        <Tab.Screen
+          name="ViewMap"
+          component={ViewMap}
+          initialParams={route.params}
+          options={{
+            tabBarLabel: 'View Incident',
+            tabBarIcon: ({ focused }) => (
+              <Icons
+                name="map-marked"
+                color={focused ? Colors.blue700 : Colors.grey400}
+                size={20}
               />
             ),
           }}

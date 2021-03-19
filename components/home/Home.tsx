@@ -22,11 +22,11 @@ import getIncidentList from '../api/GetIncidentList';
 import Loader from '../drawer/Loader';
 import Response from '../models/Response';
 import moment from 'moment';
-import logo from '../../assets/img/headerfinal.png';
+// import logo from '../../assets/img/headerfinal.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Dialog from '../drawer/Dialog';
 
-const logoImg = Image.resolveAssetSource(logo).uri;
+// const logoImg = Image.resolveAssetSource(logo).uri;
 
 const styles = StyleSheet.create({
   container: {
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     shadowColor: 'white', //no effect
     borderBottomColor: '#ffffff00',
     borderTopColor: '#ffffff00',
-    marginTop: '-15%',
+    marginTop: 0,
   },
   searchbar: {
     borderWidth: 0, //no effect
@@ -145,12 +145,12 @@ const Home = ({ navigation }) => {
           }
         />
         <View>
-          <Card style={{ backgroundColor: '#ffffff00' }}>
+          {/* <Card style={{ backgroundColor: '#ffffff00' }}>
             <Card.Cover
               source={{ uri: logoImg }}
               // eslint-disable-next-line react-native/no-inline-styles
               style={styles.headerBg}
-            />
+            /> */}
             <SearchBar
               placeholder="Search.."
               onChangeText={(e) => filter(e)}
@@ -163,7 +163,7 @@ const Home = ({ navigation }) => {
               onCancel={() => populateData()}
               onClear={() => populateData()}
             />
-          </Card>
+          {/* </Card> */}
         </View>
         <ScrollView style={styles.container}>
           {loading ? (
@@ -194,9 +194,13 @@ const Item = ({ item, navigation }) => (
       <Card.Title title={item.contact_name} />
       <Card.Content style={styles.itemContent}>
         <View>
-          <Text>
+          <Text style={{ marginVertical: 2 }}>
             <Icons name="calendar-alt" color={item.statuscolor} />
             &nbsp; {moment(item.createdtime).format('MMMM DD, YYYY HH:mm a')}
+          </Text>
+          <Text style={{ marginVertical: 2 }}>
+            <Icons name="briefcase-medical" color={item.statuscolor} />
+            &nbsp; {item.incident_type}
           </Text>
         </View>
         <Paragraph style={{ marginVertical: 10 }}>
