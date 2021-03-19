@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
   item: {
     marginVertical: 2,
     marginHorizontal: 5,
-    marginTop: 8,
+    marginTop: 5,
   },
   title: {
     fontSize: 32,
@@ -191,16 +191,12 @@ const Item = ({ item, navigation }) => (
         value={<Text style={{ margin: 8, color: 'white' }}>{item.status}</Text>}
         containerStyle={styles.badge}
       />
-      <Card.Title title={item.contact_name} />
+      <Card.Title title={item.contact_name} subtitle={item.incident_type} />
       <Card.Content style={styles.itemContent}>
         <View>
           <Text style={{ marginVertical: 2 }}>
             <Icons name="calendar-alt" color={item.statuscolor} />
             &nbsp; {moment(item.createdtime).format('MMMM DD, YYYY HH:mm a')}
-          </Text>
-          <Text style={{ marginVertical: 2 }}>
-            <Icons name="briefcase-medical" color={item.statuscolor} />
-            &nbsp; {item.incident_type}
           </Text>
         </View>
         <Paragraph style={{ marginVertical: 10 }}>
