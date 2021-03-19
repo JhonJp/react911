@@ -22,7 +22,7 @@ import getIncidentList from '../api/GetIncidentList';
 import Loader from '../drawer/Loader';
 import Response from '../models/Response';
 import moment from 'moment';
-import logo from '../../assets/img/header2.png';
+import logo from '../../assets/img/headerfinal.png';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Dialog from '../drawer/Dialog';
 
