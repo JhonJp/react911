@@ -151,18 +151,18 @@ const Home = ({ navigation }) => {
               // eslint-disable-next-line react-native/no-inline-styles
               style={styles.headerBg}
             /> */}
-            <SearchBar
-              placeholder="Search.."
-              onChangeText={(e) => filter(e)}
-              value={search}
-              searchBarStyle="minimal"
-              lightTheme
-              style={styles.searchbar}
-              inputContainerStyle={{ backgroundColor: 'white' }}
-              containerStyle={styles.searchcontainer}
-              onCancel={() => populateData()}
-              onClear={() => populateData()}
-            />
+          <SearchBar
+            placeholder="Search.."
+            onChangeText={(e) => filter(e)}
+            value={search}
+            searchBarStyle="minimal"
+            lightTheme
+            style={styles.searchbar}
+            inputContainerStyle={{ backgroundColor: 'white' }}
+            containerStyle={styles.searchcontainer}
+            onCancel={() => populateData()}
+            onClear={() => populateData()}
+          />
           {/* </Card> */}
         </View>
         <ScrollView style={styles.container}>
